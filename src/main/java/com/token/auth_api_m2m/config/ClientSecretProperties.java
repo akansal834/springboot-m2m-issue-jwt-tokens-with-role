@@ -9,8 +9,8 @@ import java.util.Map;
 
 @Configuration
 @Data
-@ConfigurationProperties("prefix=clients")
+@ConfigurationProperties(prefix="")
     public class ClientSecretProperties {
-    private Map<String, ClientSecrets> secrets;
+    private Map<String, ClientSecrets> clients;
 
 }

@@ -1,5 +1,6 @@
 package com.token.auth_api_m2m.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.token.auth_api_m2m.exception.TokenIssueException;
 import com.token.auth_api_m2m.model.*;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class AuthServiceImpl implements AuthService {
 
     @Value("${spring.application.name}")
-    private final String appName;
+    private String appName;
     private final Map<String, Jwk> jwksMap;
     private final Map<String, ClientProperties> clients;
     private final ObjectMapper objectMapper;
@@ -35,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean isValidRequest(TokenRequest tokenRequest) {
-        if(tokenRequest.equals(Constants.BEARER_TOKEN)) {
+        if(tokenRequest.getGrantType().equals(Constants.GRANT_TYPE)) {
             return true;
         }
         return false;
@@ -58,16 +59,15 @@ public class AuthServiceImpl implements AuthService {
             Instant now = Instant.now();
             Integer expiration = 3600;
             CustomClaims claims = new CustomClaims();
-            claims.setScopes(clientProperties.getRoles());
             claims.setClaims(request.getClaims());
-
+            claims.getClaims().put("roles",clientProperties.getRoles());
             JwtBuilder tokenBuilder = Jwts.builder()
                     .setAudience(clientProperties.getAud())
                     .setId(Header.JWT_TYPE)
                     .setIssuer(appName)
                     .setHeaderParam("kid", clientProperties.getKid())
                     .setSubject(clientId)
-                    .setClaims((Claims) objectMapper.convertValue(request.getClaims(), CustomClaims.class))
+                    .setClaims(objectMapper.convertValue(claims, Map.class))
                     .setExpiration(Date.from(now.plus(expiration, ChronoUnit.SECONDS)))
                     .signWith(clientProperties.getPrivateKey(), SignatureAlgorithm.RS256);
 

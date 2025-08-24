@@ -1,5 +1,6 @@
 package com.token.auth_api_m2m.config;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.token.auth_api_m2m.exception.KeyReadingException;
 import com.token.auth_api_m2m.model.ClientProperties;
@@ -12,7 +13,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
@@ -40,12 +43,12 @@ public class ClientConfig {
         Map<String, ClientProperties> clients;
         try {
             Resource resource = new ClassPathResource("clientProperties.json");
-            clients = objectMapper.readValue(resource.getInputStream(), Map.class);
+            clients = objectMapper.readValue(resource.getInputStream(), new TypeReference<Map<String, ClientProperties>>() {});
 
             if (clients.size() > 0) {
                 for (Map.Entry<String, ClientProperties> clientEntry : clients.entrySet()) {
-                    clientEntry.getValue().setSecret(clientSecretProperties.getSecrets().get(clientEntry.getKey()).getSecret());
-                    clientEntry.getValue().setKid(clientSecretProperties.getSecrets().get(clientEntry.getKey()).getKid());
+                    clientEntry.getValue().setSecret(clientSecretProperties.getClients().get(clientEntry.getKey()).getSecret());
+                    clientEntry.getValue().setKid(clientSecretProperties.getClients().get(clientEntry.getKey()).getKid());
                     clientEntry.getValue().setPrivateKey(loadPrivateKey(clientEntry.getKey()));
 
                     PublicKey publicKey = loadPublicKey(clientEntry.getKey());
@@ -103,8 +106,10 @@ public class ClientConfig {
     }
     public static PrivateKey loadPrivateKey(String clientId)
             throws IOException,IllegalArgumentException, NoSuchAlgorithmException, InvalidKeySpecException{
-        String pemFilePath = "/keys/" + clientId + "_private.pem";
-        String privateKeyPem = new String(Files.readAllBytes(Paths.get(pemFilePath)));
+        String pemFilePath = "keys/" + clientId + "_private.pem";
+        ClassPathResource resource = new ClassPathResource(pemFilePath);
+        InputStream is = resource.getInputStream();
+        String privateKeyPem = new String(is.readAllBytes(), StandardCharsets.UTF_8);
         privateKeyPem = privateKeyPem
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
@@ -119,7 +124,10 @@ public class ClientConfig {
     public static PublicKey loadPublicKey(String clientId)
             throws IOException,IllegalArgumentException, NoSuchAlgorithmException, InvalidKeySpecException {
         String pemFilePath = "/keys/" + clientId + "_public.pem";
-        String publicKeyPem = new String(Files.readAllBytes(Paths.get(pemFilePath)));
+        ClassPathResource resource = new ClassPathResource(pemFilePath);
+        InputStream is = resource.getInputStream();
+        String publicKeyPem = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+
         publicKeyPem = publicKeyPem
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")

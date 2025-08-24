@@ -8,6 +8,5 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 public class CustomClaims {
-    String scopes;
     Map<String,String> claims;
 }

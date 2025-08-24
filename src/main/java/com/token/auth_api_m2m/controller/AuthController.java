@@ -2,6 +2,7 @@ package com.token.auth_api_m2m.controller;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.token.auth_api_m2m.exception.InvalidCredentialsException;
+import com.token.auth_api_m2m.exception.InvalidRequestException;
 import com.token.auth_api_m2m.model.Constants;
 import com.token.auth_api_m2m.model.TokenRequest;
 import com.token.auth_api_m2m.model.TokenResponse;
@@ -20,7 +21,7 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @GetMapping("/oauth/token")
+    @PostMapping("/oauth/token")
     public ResponseEntity<TokenResponse> generateToken(@RequestParam(name = "clientId",required = true) String clientId,
                                                        @RequestParam(name = "clientSecret",required = true) String clientSecret,
                                                        @RequestBody TokenRequest tokenRequest){
@@ -28,7 +29,7 @@ public class AuthController {
             throw new InvalidCredentialsException(Constants.INVALID_CREDENTIALS);
         }
         if(!authService.isValidRequest(tokenRequest)) {
-            throw new InvalidCredentialsException(Constants.INVALID_REQUEST);
+            throw new InvalidRequestException(Constants.INVALID_REQUEST);
         }
         return new ResponseEntity(authService.generateToken(clientId,tokenRequest),HttpStatus.OK);
     }

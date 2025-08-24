@@ -11,6 +11,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class TokenRequest {
 
-    private String tokenType;
+    private String grantType;
     private Map<String,String> claims;
 }

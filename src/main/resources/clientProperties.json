@@ -2,13 +2,13 @@
   "client1":{
     "description": "Read data",
     "roles": "read_only",
-    "audience": "https://client1.test.com",
+    "aud": "https://client1.test.com",
     "expiry": "3600"
   },
   "client2":{
     "description": "Read and write data",
     "roles": "read write",
-    "audience": "https://client2.test.com",
+    "aud": "https://client2.test.com",
     "expiry": "3600"
   }
 }

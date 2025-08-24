@@ -56,3 +56,7 @@ We can use openssl already available in git bash to generate private public key 
 openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
 openssl rsa -pubout -in private_key.pem -out public_key.pem
 ```
+
+## Project local setup
+1. Generate client1_private.pem & client1_public.pem and place these inside resources/keys folder
+2. Generate client secrets and insert in  application.yaml

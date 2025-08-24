@@ -6,4 +6,5 @@ public class Constants {
     public static final String INVALID_REQUEST = "Invalid request";
     public static final String TOKEN_ISSUE_EXCEPTION = "Error while issuing token";
     public static final String BEARER_TOKEN = "Bearer";
+    public static final String GRANT_TYPE = "client_credentials";
 }
