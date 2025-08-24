@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -12,5 +13,5 @@ import java.util.Map;
 public class TokenRequest {
 
     private String grantType;
-    private Map<String,String> claims;
+    private Map<String,String> claims = new HashMap<>();
 }

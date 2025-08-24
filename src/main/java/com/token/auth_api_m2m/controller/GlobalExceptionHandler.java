@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<String> handleInvalidCredentials(String msg){
+    public ResponseEntity<String> handleInvalidCredentials(InvalidCredentialsException e){
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
     }
     @ExceptionHandler(InvalidRequestException.class)
-    public ResponseEntity<String> handleInvalidRequest(String msg){
+    public ResponseEntity<String> handleInvalidRequest(InvalidRequestException e){
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({KeyReadingException.class, TokenIssueException.class})
-    public ResponseEntity<String> handleInvalidKeys(String msg){
+    public ResponseEntity<String> handleInvalidKeys(KeyReadingException e){
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
