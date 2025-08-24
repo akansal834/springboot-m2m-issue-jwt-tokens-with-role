@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: auth-api-m2m
+
+clients:
+  client1:
+    secret: ${CLIENT1_SECRET}
+    kid: FZKXvA0YcC1SH0rGlclWZ9u2zmbRgNLqzfdJ5RZd-WU
+  client2:
+    secret: ${CLIENT2_SECRET}
+    kid: kiv0Mms12yO6y5rTx1Snr-f6XxxAiL5JEDo2ysdCKUs

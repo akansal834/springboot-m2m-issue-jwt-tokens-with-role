@@ -1,0 +1,12 @@
+{
+    "client1":{
+        "description": "Read data",
+        "roles": "read_only",
+        "expiry": "3600"
+    },
+    "client2":{
+        "description": "Read and write data",
+        "roles": "read write",
+        "expiry": "3600"
+    }
+}
