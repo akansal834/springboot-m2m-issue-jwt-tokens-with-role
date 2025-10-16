@@ -1,10 +1,18 @@
-## Client credentials/m2m flow of OAuth 2.0 standard
-In this flow a machine or service (client) authenticates directly 
-with the authorization server to obtain an access token, without involving a user.
+## Oauth2.0 Client credentials/m2m flow with JWT and role claims
+- Project demonstrates how to implement the OAuth client credentials grant in spring boot application
+  issuing signed JWT tokens with role based claims
+- In this flow a machine or service (client) authenticates directly  with the authorization server to obtain an access token, without involving a user.
 
-### Steps
+### Technology used
+- Spring Boot + Spring Security
+- OAuth2.0 client credentials grant (RFC 6749)
+- JWT token and RSA keypair
+- AWS ECS/EC2 - Deployment ready taskdefinition.yaml file to AWS ECS
+
+### Architecture of the flow
+![Oauth2.0 Client credentials](assets/oauth2_client_credentials.png)
 - Client (e.g. microservice) registers with the Authorization Server and get:
-  - client_id 
+  - client_id
   - client_secret
 ```
 Ways to authenticate for generating a token
